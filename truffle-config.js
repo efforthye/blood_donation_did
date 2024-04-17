@@ -26,6 +26,6 @@ module.exports = {
     },
     plugins: ['truffle-plugin-verify'],
     api_keys: {
-      polygon_scan: POLYGON_SCAN_KEY,
+      polygonscan: POLYGON_SCAN_KEY, // 정확히 이 이름으로 지정해야 함: polygonscan
     }
 };
