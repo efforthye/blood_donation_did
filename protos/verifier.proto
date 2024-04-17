@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "blood/protos";
+
+package verifier;
+
+service Verifier {
+    rpc SubmitVP (SubmitVPRequest) returns (SubmitVPResponse) {}
+}
+
+message SubmitVPRequest {
+    string vp = 1;
+}
+
+message SubmitVPResponse {
+    string result = 1;
+}
