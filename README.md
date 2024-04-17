@@ -27,6 +27,7 @@
 - polygon mainnet deploy: `npx truffle migrate --network polygon_mainnet`
 
 
-# Block Explorer
+# Block Transaction Explorer
 - network: polygon mainnet
 - url: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A
+- verify: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A#code
