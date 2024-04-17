@@ -1,2 +1,3 @@
-// express 라우터로
-// 헌혈 신청햇는지에 대한 정보같은거 postman 으로 받아볼 수 있도록 한번 해보면 좋을듯.
+const router = require("express").Router();
+
+module.exports = router;
