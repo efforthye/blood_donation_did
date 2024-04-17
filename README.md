@@ -1,7 +1,4 @@
-Initial commit
-
 # Blood Donation DID Project
-- create go.mod - ok
 - create actors
 - config
 - core
