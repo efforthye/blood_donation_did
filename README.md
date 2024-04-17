@@ -1,6 +1,6 @@
 # Blood Donation DID Project
 - DID-based blood donation platform.
-
+<br/><br/>
 
 ## 시나리오(Scenario)
 ### 사용자 정의
@@ -16,6 +16,7 @@
 3. 헌혈자(Holder)가 헌혈증의 사용을 위하여 의료기관을 방문하거나, 혈액을 기부하기 위하여 본인이 소유한 헌혈증을 검증자에게 제시합니다. 이때 헌혈자의 DID를 포함한 헌혈증이 해당 검증자(의료기관)에게 전달됩니다. 
 4. 검증자(Verifier)인 의료기관은 헌혈자(Holder)가 제시한 헌혈증에 포함된 정보와 VDR에서 조회한 헌혈 내역을 비교하여 검증합니다. 헌혈자의 헌혈 내역이 헌혈증과 일치한다면 헌혈증이 유효하다고 판단합니다.
 5. 검증자는 헌혈자에게 헌혈증의 검증 결과를 제공합니다. 기부 시에는 헌혈자의 DID와 연결된 헌혈증서를 사용하여 혈액 기부를 진행하고, 헌혈증서 사용 시에는 기존에 보유한 헌혈 증서를 폐기하고 그에 상응하는 서비스를 제공합니다.
+<br/><br/>
 
 
 # 실행 방법
@@ -25,15 +26,18 @@
     - `PRIVATE_KEY`: 배포를 위한 코인이 있는 메타마스크 비밀키 정의
     - `POLYGON_SCAN_KEY`: 스마트 컨트랙트 검증을 위한 폴리곤 스캔 API Key 정의
 - 프로젝트 실행: 프로젝트 루트에서 `npm run start`
+<br/><br/>
 
 
 ## 스마트 컨트랙트 빌드 및 배포
 - build: `npx truffle compile`
 - deploy: `npx truffle migrate --network development`
 - polygon mainnet deploy: `npx truffle migrate --network polygon_mainnet`
+<br/><br/>
 
 
 # Block Transaction Explorer
 - network: polygon mainnet
 - url: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A
 - verify: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A#code
+<br/><br/>
