@@ -1,6 +1,12 @@
 import { generateKeyPair } from 'crypto';
 
-// ecdsa 키 쌍 생성
+/**
+ * # ecdsa 암호화 및 복호화
+ * - ecdsa 키페어 생성: generateECDSAKeyPair()
+ * - ecdsa 프라이빗 키를 통한 서명: sign(데이터, 프라이빗키)
+ * - ecdsa 버플릭 키를 
+ * 
+ */
 const generateECDSAKeyPair = async () => {
     try {
         return new Promise((resolve, reject) => {
@@ -42,74 +48,42 @@ const generateECDSAKeyPair = async () => {
 })();
 
 
+/**
+ * # 서명
+ */
 class Signature {
     constructor(r, s) {
-        this.r = r;
-        this.s = s;
+        this.R = r;
+        this.S = s;
     }
 
     toString() {
-        return this.r.toString(16) + this.s.toString(16);
+        return this.R.toString(16) + this.S.toString(16);
     }
 }
 
-const sign = (digest, pvKey) => {
-  const signObj = crypto.createSign('SHA256');
-  signObj.update(digest);
-  signObj.end();
-  const sig = signObj.sign({
-    key: pvKey,
-    padding: crypto.constants.RSA_PKCS1_PSS_PADDING
-  });
-  const derSig = crypto.SignatureObject.from(sig, 'der');
-  return new Signature(derSig.r, derSig.s);
-};
+function sign(digest, privateKey) {
+    const signObj = crypto.createSign('SHA256');
+    signObj.update(digest);
+    const signatureDer = signObj.sign({
+        key: privateKey,
+        dsaEncoding: 'ieee-p1363'
+    });
+    const r = signatureDer.slice(0, 32); // Assuming P-256 curve
+    const s = signatureDer.slice(32, 64);
+    return new Signature(r.toString('hex'), s.toString('hex'));
+}
 
-const signASN1 = (digest, pvKey) => {
-  const signObj = crypto.createSign('SHA256');
-  signObj.update(digest);
-  signObj.end();
-  return signObj.sign(pvKey, 'hex');
-};
+function signASN1(digest, privateKey) {
+    const signObj = crypto.createSign('SHA256');
+    signObj.update(digest);
+    return signObj.sign(privateKey, 'base64'); // Returning in base64 for easier visualization
+}
 
-const signToString = async (digest, pvKey) => {
-  try {
-    const signature = await sign(digest, pvKey);
-    return signature.toString();
-  } catch (err) {
-    console.error('Error signing data:', err);
-    return '';
-  }
-};
-
-const main = async () => {
-  const { privateKey: pvKey } = crypto.generateKeyPairSync('ec', {
-    namedCurve: 'prime256v1',
-    privateKeyEncoding: {
-      type: 'pkcs8',
-      format: 'der'
-    }
-  });
-  
-  const msg = "Hello World.";
-  const digest = crypto.createHash('sha256').update(msg).digest();
-  
-  try {
-    const signature = await sign(digest, pvKey);
-    const signatureASN1 = await signASN1(digest, pvKey);
-    console.log("########## Sign ##########");
-    console.log("===== Message =====");
-    console.log(`Msg: ${msg}`);
-    console.log(`Digest: ${digest.toString('hex')}`);
-    console.log(`R: ${signature.r}, S: ${signature.s}`);
-    console.log(`Signature: ${signature.toString()}`);
-    console.log(`SignatureASN1: ${signatureASN1}`);
-  } catch (err) {
-    console.error("Failed to sign message:", err);
-  }
-};
-  
-
+function signToString(digest, privateKey) {
+    const signature = sign(digest, privateKey);
+    return signature.r.toString('hex') + signature.s.toString('hex');
+}
 
 export {
     generateECDSAKeyPair
