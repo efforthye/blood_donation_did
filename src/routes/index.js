@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+// VC, VP 생성 및 VDR 입력
+
 router.post('/create/did', (req, res) =>{
     try {
         const {name, age, bloodType} = req.body;
