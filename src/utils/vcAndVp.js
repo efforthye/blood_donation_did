@@ -20,4 +20,27 @@ function createDonationCertificate(donorId, certificateId, donationDate) {
 }
 
 const vc = createDonationCertificate('DONOR123', 'CERT001', Date.now());
-console.log(vc);
+console.log({vc});
+
+function createPresentation(certificate, signature) {
+  const presentation = {
+    certificate,
+    signature
+  };
+
+  const sign = crypto.createSign('SHA256');
+  sign.update(JSON.stringify(presentation));
+  sign.end();
+  const vpSignature = sign.sign(privateKey, 'base64');
+
+  return { presentation, vpSignature };
+}
+
+// 검증 요청 생성
+const vp = createPresentation(vc.certificate, vc.signature);
+console.log({vp});
+
+export {
+  createDonationCertificate,
+  createPresentation
+}
