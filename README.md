@@ -22,8 +22,8 @@
 - VC(Verifiable Credential): VC는 디지털 환경에서 신뢰성 있는 주체에 의해 발급된, 검증 가능한 자격 증명이다.
 - VP(Verifiable Presentation): VP는 하나 이상의 VC를 포함하며, VC를 요청하는 쪽에 제시된다.
 
-### 헌혈증 DID 프로젝트에의 적용
-유저가 병원에서 수혈이 필요한 환자에게 자신의 헌혈증을 사용할 것을 증명하기 위해, 병원의 요구에 따라 자신의 Blood Donation Certificate VC를 기반으로 VP를 생성하여 제시한다.
+#### 프로젝트에 적용
+유저가 병원에서 수혈이 필요한 환자에게 자신의 헌혈증을 사용할 것을 증명하기 위해, 병원의 요구에 따라 자신의 Blood Donation Certificate VC를 기반으로 VP를 생성하여 제시할 수 있다.
 이 VP는 병원에서 유저의 신원 및 헌혈 기록을 검증할 수 있게 해주며, 병원은 이를 통해 유저가 헌혈을 한 사실을 확인하고 필요한 절차를 진행할 수 있다.
 - VC 정의
     - NAME: Blood Donation Certificate
