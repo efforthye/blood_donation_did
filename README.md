@@ -18,6 +18,31 @@
 5. 헌혈 증서의 사용과 폐기: 검증자는 헌혈자에게 헌혈증의 검증 결과를 제공합니다. 기부 시에는 헌혈자의 DID와 연결된 헌혈증서를 사용하여 혈액 기부를 진행하고, 헌혈증서 사용 시에는 기존에 보유한 헌혈 증서를 폐기하고 그에 상응하는 서비스를 제공합니다. 이 과정은 블록체인에 기록되어 헌혈 증서의 사용 내역이 투명하게 관리됩니다.
 <br/><br/>
 
+## VC & VP
+- VC(Verifiable Credential): VC는 디지털 환경에서 신뢰성 있는 주체에 의해 발급된, 검증 가능한 자격 증명이다.
+- VP(Verifiable Presentation): VP는 하나 이상의 VC를 포함하며, VC를 요청하는 쪽에 제시된다.
+
+### 헌혈증 DID 프로젝트에의 적용
+유저가 병원에서 수혈이 필요한 환자에게 자신의 헌혈증을 사용할 것을 증명하기 위해, 병원의 요구에 따라 자신의 Blood Donation Certificate VC를 기반으로 VP를 생성하여 제시한다.
+이 VP는 병원에서 유저의 신원 및 헌혈 기록을 검증할 수 있게 해주며, 병원은 이를 통해 유저가 헌혈을 한 사실을 확인하고 필요한 절차를 진행할 수 있다.
+- VC 정의
+    - NAME: Blood Donation Certificate
+    - ISSUER: National Health Service (가상의 발급 기관 이름입니다)
+    - TYPE: ["VerifiableCredential", "BloodDonationCredential"]
+    - CLAIMS:
+        - name: 박혜림 (유저의 이름)
+        - birth: 2001-12-22 (유저의 생년월일)
+        - bloodType: AB (유저의 혈액형)
+        - donationDate: 2023-04-18 (헌혈 날짜)
+        - donationNumber: 123456 (헌혈증 일련번호)
+        - donationCenter: 헌혈의집건대역센터 (헌혈한 센터)
+        - certificateID: DID:(timestamp):123456789abcdefghi (디지털 신원 증명의 고유 식별자)
+- VP 정의
+    - NAME: 'Blood Donation Certificate Presentation'
+    - CONTEXT: '병원에서 수혈 환자에게 헌혈증 사용을 증명하기 위해 사용'
+    - TYPE: ["VerifiablePresentation", "BloodDonationPresentation"]
+    - VERIFIABLE CREDENTIAL: Blood Donation Certificate VC
+    - HOLDER: DID:(timestamp):987654321hgfedcba (VC 소유자의 디지털 신원 증명 고유 식별자)
 
 ## 실행 방법
 - 모듈 설치: 프로젝트 루트에서 `npm install`
