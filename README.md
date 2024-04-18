@@ -19,7 +19,7 @@
 <br/><br/>
 
 
-# 실행 방법
+## 실행 방법
 - 모듈 설치: 프로젝트 루트에서 `npm install`
 - 프로젝트 루트에 `.env` 파일 생성
     - `PORT`: 서버 실행 포트 정의
@@ -37,7 +37,7 @@
 <br/><br/>
 
 
-# Block Transaction Explorer
+## Block Transaction Explorer
 - network: polygon mainnet
 - url: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A
 - verify: https://polygonscan.com/address/0xc884c1264e4a672203FFBcFa6D275512a5c64a0A#code
