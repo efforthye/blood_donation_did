@@ -4,14 +4,13 @@ import { generateKeyPair } from 'crypto';
  * # ecdsa 암호화 및 복호화
  * - ecdsa 키페어 생성: generateECDSAKeyPair()
  * - ecdsa 프라이빗 키를 통한 서명: sign(데이터, 프라이빗키)
- * - ecdsa 버플릭 키를 
  * 
  */
 const generateECDSAKeyPair = async () => {
     try {
         return new Promise((resolve, reject) => {
             generateKeyPair('ec', {
-                namedCurve: 'prime256v1', // secp384r1, secp521r1을 사용하려면 여기를 변경하세요
+                namedCurve: 'prime256v1', // secp384r1, secp521r1
                 publicKeyEncoding: {
                     type: 'spki',
                     format: 'der'
@@ -37,7 +36,7 @@ const generateECDSAKeyPair = async () => {
     }
 };
 
-// 테스트
+// test
 (async () => {
     try {
         // const { publicKey, privateKey, publicKeyString, privateKeyString } = await generateECDSAKeyPair();
@@ -49,7 +48,7 @@ const generateECDSAKeyPair = async () => {
 
 
 /**
- * # 서명
+ * # sign
  */
 class Signature {
     constructor(r, s) {
