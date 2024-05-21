@@ -1,54 +1,33 @@
-import { generateKeyPair } from 'crypto';
+const { generateKeyPair, createSign, createVerify } = require('crypto');
 
-/**
- * # ecdsa 암호화 및 복호화
- * - ecdsa 키페어 생성: generateECDSAKeyPair()
- * - ecdsa 프라이빗 키를 통한 서명: sign(데이터, 프라이빗키)
- * 
- */
+// ECDSA 키 페어 생성 함수
 const generateECDSAKeyPair = async () => {
-    try {
-        return new Promise((resolve, reject) => {
-            generateKeyPair('ec', {
-                namedCurve: 'prime256v1', // secp384r1, secp521r1
-                publicKeyEncoding: {
-                    type: 'spki',
-                    format: 'der'
-                },
-                privateKeyEncoding: {
-                    type: 'pkcs8',
-                    format: 'der'
-                }
-            }, (err, publicKey, privateKey) => {
-                if (err) {
-                    console.error('ECDSA Keypair generation failed:', err);
-                    reject(err);
-                } else {
-                    const publicKeyString = publicKey.toString('hex');
-                    const privateKeyString = privateKey.toString('hex');
-                    resolve({ publicKey, privateKey, publicKeyString, privateKeyString });
-                }
-            });
+    return new Promise((resolve, reject) => {
+        generateKeyPair('ec', {
+            namedCurve: 'prime256v1', // secp384r1, secp521r1
+            publicKeyEncoding: {
+                type: 'spki',
+                format: 'der'
+            },
+            privateKeyEncoding: {
+                type: 'pkcs8',
+                format: 'der'
+            }
+        }, (err, publicKey, privateKey) => {
+            if (err) {
+                console.error('ECDSA Keypair generation failed:', err);
+                reject(err);
+            } else {
+                const publicKeyString = publicKey.toString('hex');
+                const privateKeyString = privateKey.toString('hex');
+                resolve({ publicKey, privateKey, publicKeyString, privateKeyString });
+            }
         });
-    } catch (error) {
-        console.log({error});
-        throw error;
-    }
+    });
 };
 
-// test
-(async () => {
-    try {
-        // const { publicKey, privateKey, publicKeyString, privateKeyString } = await generateECDSAKeyPair();
-        // console.log({ publicKey, privateKey, publicKeyString, privateKeyString });
-    } catch (error) {
-        console.error('Error:', error);
-    }
-})();
-
-
 /**
- * # sign
+ * 서명 클래스
  */
 class Signature {
     constructor(r, s) {
@@ -57,13 +36,20 @@ class Signature {
     }
 
     toString() {
-        return this.R.toString(16) + this.S.toString(16);
+        return this.R + this.S;
     }
 }
 
+/**
+ * 데이터 서명 함수 (IEEE-P1363 형식)
+ * @param {Buffer} digest
+ * @param {Buffer} privateKey
+ * @returns {Signature}
+ */
 function sign(digest, privateKey) {
-    const signObj = crypto.createSign('SHA256');
+    const signObj = createSign('SHA256');
     signObj.update(digest);
+    signObj.end();
     const signatureDer = signObj.sign({
         key: privateKey,
         dsaEncoding: 'ieee-p1363'
@@ -73,17 +59,50 @@ function sign(digest, privateKey) {
     return new Signature(r.toString('hex'), s.toString('hex'));
 }
 
+/**
+ * 데이터 서명 함수 (ASN.1 형식)
+ * @param {Buffer} digest
+ * @param {Buffer} privateKey
+ * @returns {string} Base64 encoded signature
+ */
 function signASN1(digest, privateKey) {
-    const signObj = crypto.createSign('SHA256');
+    const signObj = createSign('SHA256');
     signObj.update(digest);
-    return signObj.sign(privateKey, 'base64'); // Returning in base64 for easier visualization
+    signObj.end();
+    return signObj.sign(privateKey, 'base64');
 }
 
+/**
+ * 서명 결과를 문자열로 반환
+ * @param {Buffer} digest
+ * @param {Buffer} privateKey
+ * @returns {string}
+ */
 function signToString(digest, privateKey) {
     const signature = sign(digest, privateKey);
-    return signature.r.toString('hex') + signature.s.toString('hex');
+    return signature.toString();
 }
 
-export {
-    generateECDSAKeyPair
+/**
+ * 서명 검증 함수
+ * @param {Buffer} digest
+ * @param {string} signature Base64 encoded signature
+ * @param {Buffer} publicKey
+ * @returns {boolean}
+ */
+function verifySignature(digest, signature, publicKey) {
+    const verifyObj = createVerify('SHA256');
+    verifyObj.update(digest);
+    verifyObj.end();
+    return verifyObj.verify(publicKey, Buffer.from(signature, 'base64'));
 }
+
+module.exports = {
+    generateECDSAKeyPair,
+    // publicKey,
+    // privateKey,
+    sign,
+    signASN1,
+    signToString,
+    verifySignature
+};

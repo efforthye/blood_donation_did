@@ -6,7 +6,10 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "compile": "truffle compile",
+    "deploy": "npm run compile && truffle migrate --network polygon_mainnet",
+    "verify": "truffle run verify BloodDonationRegistry --network polygon_mainnet"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +18,7 @@
     "@truffle/hdwallet-provider": "^2.1.15",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ecdsa": "^0.7.0",
     "express": "^4.19.2",
