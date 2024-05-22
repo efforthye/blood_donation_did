@@ -97,7 +97,7 @@ router.post('/create/donor', async (req, res, next) => {
 
     web3.eth.sendSignedTransaction(serializedTxHex)
       .on('receipt', (receipt) => {
-        res.send({ success: true, receipt: JSON.parse(JSON.stringify(receipt, jsonReplacer)), signedData, publicKey: publicKeyString, did });
+        return res.send({ success: true, receipt: JSON.parse(JSON.stringify(receipt, jsonReplacer)), signedData, publicKey: publicKeyString, did });
       })
       .on('error', async (error) => {
         if (error.message.includes('Transaction was not mined within 50 blocks')) {
@@ -109,7 +109,7 @@ router.post('/create/donor', async (req, res, next) => {
           const newSerializedTxHex = Buffer.from(newSerializedTx).toString('hex');
           web3.eth.sendSignedTransaction('0x' + newSerializedTxHex)
             .on('receipt', (newReceipt) => {
-              res.send({ success: true, receipt: JSON.parse(JSON.stringify(newReceipt, jsonReplacer)), signedData, publicKey: publicKeyString, did });
+              return res.send({ success: true, receipt: JSON.parse(JSON.stringify(newReceipt, jsonReplacer)), signedData, publicKey: publicKeyString, did });
             })
             .on('error', (newError) => {
               console.error('Transaction error on retry:', newError);
@@ -120,6 +120,7 @@ router.post('/create/donor', async (req, res, next) => {
           next(error);
         }
       });
+      res.end();
   } catch (error) {
     next(error);
   }
