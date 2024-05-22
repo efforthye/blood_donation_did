@@ -2,10 +2,14 @@
 pragma solidity ^0.8.0;
 
 contract BloodDonationRegistry {
+    // 관련 내용 추가
     struct BloodDonation {
-        string donorDID;
-        string donationDate;
-        string bloodType;
+        // + 증서번호(암호화)
+        string donorDID; // 성명, 생년월일, 성별, 혈액형
+        string donationDate; // 헌혈 일자
+        string bloodType; // 혈액형 (제거)
+        // + 혈액원명
+        // + 발행인
     }
 
     mapping(string => BloodDonation) private donations;

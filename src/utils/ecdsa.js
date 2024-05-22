@@ -41,22 +41,31 @@ class Signature {
 }
 
 /**
- * 데이터 서명 함수 (IEEE-P1363 형식)
+ * 데이터 서명 함수 (der 형식)
  * @param {Buffer} digest
  * @param {Buffer} privateKey
  * @returns {Signature}
  */
 function sign(digest, privateKey) {
-    const signObj = createSign('SHA256');
-    signObj.update(digest);
-    signObj.end();
-    const signatureDer = signObj.sign({
-        key: privateKey,
-        dsaEncoding: 'ieee-p1363'
-    });
-    const r = signatureDer.slice(0, 32); // Assuming P-256 curve
-    const s = signatureDer.slice(32, 64);
-    return new Signature(r.toString('hex'), s.toString('hex'));
+    try {
+        const signObj = createSign('SHA256');
+        signObj.update(digest);
+        signObj.end();
+
+        const signatureDer = signObj.sign({
+            key: privateKey,
+            format: 'der',
+            type: 'pkcs8'
+        });
+        const r = signatureDer.slice(0, 32); // Assuming P-256 curve
+        const s = signatureDer.slice(32, 64);
+
+        const sign = new Signature(r.toString('hex'), s.toString('hex'));
+        return sign
+    } catch (error) {
+        console.log({func: 'ecdsa.js sign', error});
+        throw error;
+    }
 }
 
 /**
@@ -79,8 +88,13 @@ function signASN1(digest, privateKey) {
  * @returns {string}
  */
 function signToString(digest, privateKey) {
-    const signature = sign(digest, privateKey);
-    return signature.toString();
+    try {
+        const signature = sign(digest, privateKey);
+        return signature.toString();
+    } catch (error) {
+        console.log({func: 'ecdsa.js signToString', error});
+        throw error;
+    }
 }
 
 /**

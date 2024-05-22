@@ -15,6 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ethereumjs/common": "^4.3.0",
+    "@ethereumjs/tx": "^5.3.0",
     "@truffle/hdwallet-provider": "^2.1.15",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
