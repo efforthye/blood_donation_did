@@ -136,13 +136,16 @@ router.post('/create/presentation', (req, res, next) => {
   }
 });
 
-router.post('/use/certificate', (req, res, next) => {
+router.post('/use/certificate', async (req, res, next) => {
     try {
         const { certificateId, donorId } = req.body;
         
         // 헌혈증 고유 ID를 통하여 BloodDonation 컨트랙트에서 헌혈 증서를 사용
         // 스마트 컨트랙트의 헌혈 증서를 사용하는 함수 사용: useCertificate()
         // 위 함수를 사용하면 내부적으로 verifyCertificate와 invalidateCertificate가 실행됨
+        const result = await useCertificate(certificateId, donorId);
+
+        res.send({ donorId, result });
 
         res.send({ donorId });
     } catch (error) {
